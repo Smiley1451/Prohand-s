@@ -1,0 +1,81 @@
+# Git ignore for Android/Gradle projects — also blocks API keys and other secrets
+
+# Gradle
+.gradle/
+/build/
+**/build/
+
+# Local configuration (SDK path, local secrets)
+local.properties
+**/local.properties
+
+# Signing files / keystores
+*.keystore
+*.jks
+keystore.properties
+**/keystore.properties
+upload-keystore.jks
+release.keystore
+signing.properties
+
+# Sensitive properties or API key files (add names you use)
+secrets.properties
+**/secrets.properties
+secret.properties
+**/secret.properties
+api_keys.properties
+**/api_keys.properties
+*.env
+.env.*
+.env
+
+# Firebase / Google services
+google-services.json
+google-services.*.json
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+*.iws
+out/
+
+# Build outputs
+app/*.apk
+app/*.ap_
+**/intermediates/
+**/outputs/
+**/generated/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Gradle Wrapper
+gradle-wrapper.jar
+
+# Misc
+.DS_Store
+Thumbs.db
+*.log
+*.orig
+
+# Certificates and keys
+*.p12
+*.pem
+*.key
+
+# Crashlytics/fabric
+fabric.properties
+
+# OS files
+ehthumbs.db
+Icon
+
+# If you keep other secret files in the repo root or subfolders, add them here, for example:
+# keys.json
+# auth.json
+# myapp/secret-file.json
+
+# Helpful note for removing already-committed secrets (run locally):
+# git rm --cached path/to/secret.file; git commit -m "Remove secret file"; git push
+# To fully purge secrets from history, use BFG or git filter-repo (careful: rewrites history).
+
