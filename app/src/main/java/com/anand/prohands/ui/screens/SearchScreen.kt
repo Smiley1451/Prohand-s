@@ -117,7 +117,9 @@ fun SearchScreen(
                     unfocusedTextColor = ProColors.TextPrimary,
                     focusedBorderColor = ProColors.Primary,
                     unfocusedBorderColor = ProColors.TextSecondary,
-                    cursorColor = ProColors.Primary
+                    cursorColor = ProColors.Primary,
+                    focusedContainerColor = ProColors.Surface,
+                    unfocusedContainerColor = ProColors.Surface
                 ),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),

@@ -46,7 +46,7 @@ fun AuthBackground(content: @Composable BoxScope.() -> Unit) {
             val width = size.width
             val height = size.height
 
-
+            // Top Wave
             val pathTop = Path().apply {
                 moveTo(0f, 0f)
                 lineTo(0f, height * 0.2f)
@@ -144,17 +144,19 @@ fun LoginScreen(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Email") },
-                textStyle = TextStyle(color = ProColors.TextPrimary),
+                textStyle = TextStyle(color = ProColors.OnBackground),
                 leadingIcon = { Icon(Icons.Default.Email, contentDescription = null, tint = ProColors.PrimaryVariant) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = ProColors.TextPrimary,
-                    unfocusedTextColor = ProColors.TextPrimary,
+                    focusedTextColor = ProColors.OnBackground,
+                    unfocusedTextColor = ProColors.OnBackground,
                     focusedBorderColor = ProColors.PrimaryVariant,
                     unfocusedBorderColor = Color.Gray,
                     focusedLabelColor = ProColors.PrimaryVariant,
-                    cursorColor = ProColors.TextPrimary
+                    cursorColor = ProColors.Secondary,
+                    unfocusedContainerColor = Color.White.copy(alpha = 0.5f),
+                    focusedContainerColor = Color.White.copy(alpha = 0.8f)
                 ),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next)
             )
@@ -165,7 +167,7 @@ fun LoginScreen(
                 value = password,
                 onValueChange = { password = it },
                 label = { Text("Password") },
-                textStyle = TextStyle(color = ProColors.TextPrimary),
+                textStyle = TextStyle(color = ProColors.OnBackground),
                 leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null, tint = ProColors.PrimaryVariant) },
                 trailingIcon = {
                     IconButton(onClick = { passwordVisible = !passwordVisible }) {
@@ -180,12 +182,14 @@ fun LoginScreen(
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = ProColors.TextPrimary,
-                    unfocusedTextColor = ProColors.TextPrimary,
+                    focusedTextColor = ProColors.OnBackground,
+                    unfocusedTextColor = ProColors.OnBackground,
                     focusedBorderColor = ProColors.PrimaryVariant,
                     unfocusedBorderColor = Color.Gray,
                     focusedLabelColor = ProColors.PrimaryVariant,
-                    cursorColor = ProColors.TextPrimary
+                    cursorColor = ProColors.Secondary,
+                    unfocusedContainerColor = Color.White.copy(alpha = 0.5f),
+                    focusedContainerColor = Color.White.copy(alpha = 0.8f)
                 ),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done)
             )
@@ -313,17 +317,19 @@ fun SignUpScreen(
                 value = username,
                 onValueChange = { username = it },
                 label = { Text("Name") },
-                textStyle = TextStyle(color = ProColors.TextPrimary),
+                textStyle = TextStyle(color = ProColors.OnBackground),
                 leadingIcon = { Icon(Icons.Default.Person, contentDescription = null, tint = ProColors.PrimaryVariant) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = ProColors.TextPrimary,
-                    unfocusedTextColor = ProColors.TextPrimary,
+                    focusedTextColor = ProColors.OnBackground,
+                    unfocusedTextColor = ProColors.OnBackground,
                     focusedBorderColor = ProColors.PrimaryVariant,
                     unfocusedBorderColor = Color.Gray,
                     focusedLabelColor = ProColors.PrimaryVariant,
-                    cursorColor = ProColors.TextPrimary
+                    cursorColor = ProColors.Secondary,
+                    unfocusedContainerColor = Color.White.copy(alpha = 0.5f),
+                    focusedContainerColor = Color.White.copy(alpha = 0.8f)
                 )
             )
             
@@ -333,17 +339,19 @@ fun SignUpScreen(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Email") },
-                textStyle = TextStyle(color = ProColors.TextPrimary),
+                textStyle = TextStyle(color = ProColors.OnBackground),
                 leadingIcon = { Icon(Icons.Default.Email, contentDescription = null, tint = ProColors.PrimaryVariant) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = ProColors.TextPrimary,
-                    unfocusedTextColor = ProColors.TextPrimary,
+                    focusedTextColor = ProColors.OnBackground,
+                    unfocusedTextColor = ProColors.OnBackground,
                     focusedBorderColor = ProColors.PrimaryVariant,
                     unfocusedBorderColor = Color.Gray,
                     focusedLabelColor = ProColors.PrimaryVariant,
-                    cursorColor = ProColors.TextPrimary
+                    cursorColor = ProColors.Secondary,
+                    unfocusedContainerColor = Color.White.copy(alpha = 0.5f),
+                    focusedContainerColor = Color.White.copy(alpha = 0.8f)
                 ),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next)
             )
@@ -354,7 +362,7 @@ fun SignUpScreen(
                 value = password,
                 onValueChange = { password = it },
                 label = { Text("Password") },
-                textStyle = TextStyle(color = ProColors.TextPrimary),
+                textStyle = TextStyle(color = ProColors.OnBackground),
                 leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null, tint = ProColors.PrimaryVariant) },
                 trailingIcon = {
                     IconButton(onClick = { passwordVisible = !passwordVisible }) {
@@ -369,12 +377,14 @@ fun SignUpScreen(
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = ProColors.TextPrimary,
-                    unfocusedTextColor = ProColors.TextPrimary,
+                    focusedTextColor = ProColors.OnBackground,
+                    unfocusedTextColor = ProColors.OnBackground,
                     focusedBorderColor = ProColors.PrimaryVariant,
                     unfocusedBorderColor = Color.Gray,
                     focusedLabelColor = ProColors.PrimaryVariant,
-                    cursorColor = ProColors.TextPrimary
+                    cursorColor = ProColors.Secondary,
+                    unfocusedContainerColor = Color.White.copy(alpha = 0.5f),
+                    focusedContainerColor = Color.White.copy(alpha = 0.8f)
                 ),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Next)
             )
@@ -385,7 +395,7 @@ fun SignUpScreen(
                 value = confirmPassword,
                 onValueChange = { confirmPassword = it },
                 label = { Text("Confirm Password") },
-                textStyle = TextStyle(color = ProColors.TextPrimary),
+                textStyle = TextStyle(color = ProColors.OnBackground),
                 leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null, tint = ProColors.PrimaryVariant) },
                  trailingIcon = {
                     IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
@@ -400,12 +410,14 @@ fun SignUpScreen(
                 visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = ProColors.TextPrimary,
-                    unfocusedTextColor = ProColors.TextPrimary,
+                    focusedTextColor = ProColors.OnBackground,
+                    unfocusedTextColor = ProColors.OnBackground,
                     focusedBorderColor = ProColors.PrimaryVariant,
                     unfocusedBorderColor = Color.Gray,
                     focusedLabelColor = ProColors.PrimaryVariant,
-                    cursorColor = ProColors.TextPrimary
+                    cursorColor = ProColors.Secondary,
+                    unfocusedContainerColor = Color.White.copy(alpha = 0.5f),
+                    focusedContainerColor = Color.White.copy(alpha = 0.8f)
                 ),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done)
             )
@@ -529,16 +541,18 @@ fun VerifyAccountScreen(
                 value = otp,
                 onValueChange = { otp = it },
                 label = { Text("OTP") },
-                textStyle = TextStyle(color = ProColors.TextPrimary),
+                textStyle = TextStyle(color = ProColors.OnBackground),
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = ProColors.TextPrimary,
-                    unfocusedTextColor = ProColors.TextPrimary,
+                    focusedTextColor = ProColors.OnBackground,
+                    unfocusedTextColor = ProColors.OnBackground,
                     focusedBorderColor = ProColors.PrimaryVariant,
                     unfocusedBorderColor = Color.Gray,
                     focusedLabelColor = ProColors.PrimaryVariant,
-                    cursorColor = ProColors.TextPrimary
+                    cursorColor = ProColors.Secondary,
+                    unfocusedContainerColor = Color.White.copy(alpha = 0.5f),
+                    focusedContainerColor = Color.White.copy(alpha = 0.8f)
                 ),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done)
             )
@@ -638,16 +652,18 @@ fun VerifyMfaScreen(
                 value = otp,
                 onValueChange = { otp = it },
                 label = { Text("OTP") },
-                textStyle = TextStyle(color = ProColors.TextPrimary),
+                textStyle = TextStyle(color = ProColors.OnBackground),
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = ProColors.TextPrimary,
-                    unfocusedTextColor = ProColors.TextPrimary,
+                    focusedTextColor = ProColors.OnBackground,
+                    unfocusedTextColor = ProColors.OnBackground,
                     focusedBorderColor = ProColors.PrimaryVariant,
                     unfocusedBorderColor = Color.Gray,
                     focusedLabelColor = ProColors.PrimaryVariant,
-                    cursorColor = ProColors.TextPrimary
+                    cursorColor = ProColors.Secondary,
+                    unfocusedContainerColor = Color.White.copy(alpha = 0.5f),
+                    focusedContainerColor = Color.White.copy(alpha = 0.8f)
                 ),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done)
             )
@@ -731,17 +747,19 @@ fun ForgotPasswordScreen(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Email") },
-                textStyle = TextStyle(color = ProColors.TextPrimary),
+                textStyle = TextStyle(color = ProColors.OnBackground),
                 leadingIcon = { Icon(Icons.Default.Email, contentDescription = null, tint = ProColors.PrimaryVariant) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = ProColors.TextPrimary,
-                    unfocusedTextColor = ProColors.TextPrimary,
+                    focusedTextColor = ProColors.OnBackground,
+                    unfocusedTextColor = ProColors.OnBackground,
                     focusedBorderColor = ProColors.PrimaryVariant,
                     unfocusedBorderColor = Color.Gray,
                     focusedLabelColor = ProColors.PrimaryVariant,
-                    cursorColor = ProColors.TextPrimary
+                    cursorColor = ProColors.Secondary,
+                    unfocusedContainerColor = Color.White.copy(alpha = 0.5f),
+                    focusedContainerColor = Color.White.copy(alpha = 0.8f)
                 ),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Done)
             )
@@ -844,16 +862,18 @@ fun ResetPasswordScreen(
                 value = otp,
                 onValueChange = { otp = it },
                 label = { Text("OTP") },
-                textStyle = TextStyle(color = ProColors.TextPrimary),
+                textStyle = TextStyle(color = ProColors.OnBackground),
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = ProColors.TextPrimary,
-                    unfocusedTextColor = ProColors.TextPrimary,
+                    focusedTextColor = ProColors.OnBackground,
+                    unfocusedTextColor = ProColors.OnBackground,
                     focusedBorderColor = ProColors.PrimaryVariant,
                     unfocusedBorderColor = Color.Gray,
                     focusedLabelColor = ProColors.PrimaryVariant,
-                    cursorColor = ProColors.TextPrimary
+                    cursorColor = ProColors.Secondary,
+                    unfocusedContainerColor = Color.White.copy(alpha = 0.5f),
+                    focusedContainerColor = Color.White.copy(alpha = 0.8f)
                 ),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next)
             )
@@ -864,7 +884,7 @@ fun ResetPasswordScreen(
                 value = newPassword,
                 onValueChange = { newPassword = it },
                 label = { Text("New Password") },
-                textStyle = TextStyle(color = ProColors.TextPrimary),
+                textStyle = TextStyle(color = ProColors.OnBackground),
                 leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null, tint = ProColors.PrimaryVariant) },
                  trailingIcon = {
                     IconButton(onClick = { newPasswordVisible = !newPasswordVisible }) {
@@ -879,12 +899,14 @@ fun ResetPasswordScreen(
                 visualTransformation = if (newPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = ProColors.TextPrimary,
-                    unfocusedTextColor = ProColors.TextPrimary,
+                    focusedTextColor = ProColors.OnBackground,
+                    unfocusedTextColor = ProColors.OnBackground,
                     focusedBorderColor = ProColors.PrimaryVariant,
                     unfocusedBorderColor = Color.Gray,
                     focusedLabelColor = ProColors.PrimaryVariant,
-                    cursorColor = ProColors.TextPrimary
+                    cursorColor = ProColors.Secondary,
+                    unfocusedContainerColor = Color.White.copy(alpha = 0.5f),
+                    focusedContainerColor = Color.White.copy(alpha = 0.8f)
                 ),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done)
             )

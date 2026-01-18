@@ -13,12 +13,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
-//    const val BASE_URL = "https://unsufferably-heimish-tashina.ngrok-free.dev/"
-const val BASE_URL = "https://unsufferably-heimish-tashina.ngrok-free.dev/"
-    private const val CERT_HOST = "unsufferably-heimish-tashina.ngrok-free.dev"
-    private const val CERT_PIN_PLACEHOLDER = "sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
-
-    // Removed the manual init requirement. We will pull SessionManager from the Application instance.
+    const val BASE_URL = "https://admin.prohands.tech/"
+    private const val CERT_HOST = "admin.prohands.tech"
 
     private val okHttpClient: OkHttpClient by lazy {
         // Access SessionManager directly from the Application instance
@@ -26,9 +22,9 @@ const val BASE_URL = "https://unsufferably-heimish-tashina.ngrok-free.dev/"
         val authInterceptor = AuthInterceptor(sessionManager)
 
         val clientBuilder = OkHttpClient.Builder()
-            .connectTimeout(120, TimeUnit.SECONDS) // Updated to 120s
-            .readTimeout(120, TimeUnit.SECONDS)    // Updated to 120s
-            .writeTimeout(120, TimeUnit.SECONDS)   // Updated to 120s
+            .connectTimeout(120, TimeUnit.SECONDS)
+            .readTimeout(120, TimeUnit.SECONDS)
+            .writeTimeout(120, TimeUnit.SECONDS)
             .addInterceptor(authInterceptor)
 
         if (BuildConfig.DEBUG) {
@@ -36,12 +32,10 @@ const val BASE_URL = "https://unsufferably-heimish-tashina.ngrok-free.dev/"
                 level = Level.BODY
             }
             clientBuilder.addInterceptor(logging)
-        } else {
-            val certificatePinner = CertificatePinner.Builder()
-                .add(CERT_HOST, CERT_PIN_PLACEHOLDER)
-                .build()
-            clientBuilder.certificatePinner(certificatePinner)
         }
+        
+        // Removed the invalid CertificatePinner that was causing connection failures in signed APK.
+        // If certificate pinning is required, add a valid pin for admin.prohands.tech.
 
         clientBuilder.build()
     }

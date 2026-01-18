@@ -11,9 +11,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Navigation
 import androidx.compose.material.icons.outlined.ChevronRight
@@ -73,6 +74,7 @@ fun HomeScreen(
     val location by viewModel.location.collectAsState()
     val currentUserProfile by viewModel.currentUserProfile.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+    val isMoreLoading by viewModel.isMoreLoading.collectAsState()
     val error by viewModel.error.collectAsState()
     val context = LocalContext.current
 
@@ -100,9 +102,7 @@ fun HomeScreen(
                     duration = SnackbarDuration.Long
                 )
                 if (result == SnackbarResult.ActionPerformed) {
-                    location?.let { loc ->
-                        viewModel.fetchJobs(loc.latitude, loc.longitude)
-                    }
+                    viewModel.refreshJobs()
                 }
             }
         }
@@ -152,9 +152,7 @@ fun HomeScreen(
                         title = "Couldn't load jobs",
                         message = error ?: "Something went wrong. Please try again.",
                         onRetryClick = {
-                            location?.let { loc ->
-                                viewModel.fetchJobs(loc.latitude, loc.longitude)
-                            }
+                            viewModel.refreshJobs()
                         }
                     )
                 }
@@ -174,16 +172,20 @@ fun HomeScreen(
                         },
                         actionLabel = "Refresh",
                         onActionClick = {
-                            location?.let { loc ->
-                                viewModel.fetchJobs(loc.latitude, loc.longitude)
-                            }
+                            viewModel.refreshJobs()
                         }
                     )
                 }
 
                 // Jobs list
                 else -> {
-                    JobsList(jobs = jobs, userLocation = location, navController = navController)
+                    JobsList(
+                        jobs = jobs, 
+                        userLocation = location, 
+                        navController = navController,
+                        isMoreLoading = isMoreLoading,
+                        onLoadMore = { viewModel.loadMoreJobs() }
+                    )
                 }
             }
         }
@@ -254,31 +256,71 @@ private fun LocationWaitingState() {
 }
 
 /**
- * Jobs list with proper LazyColumn implementation.
+ * Jobs list with proper LazyColumn implementation and pagination.
  */
 @Composable
 private fun JobsList(
     jobs: List<JobResponse>,
     userLocation: Location?,
-    navController: NavController
+    navController: NavController,
+    isMoreLoading: Boolean,
+    onLoadMore: () -> Unit
 ) {
+    val listState = rememberLazyListState()
+
+    // Detect when user is near the end of the list
+    val shouldLoadMore = remember {
+        derivedStateOf {
+            val layoutInfo = listState.layoutInfo
+            val totalItemsNumber = layoutInfo.totalItemsCount
+            val lastVisibleItemIndex = (layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
+            
+            // Trigger load more when user is 5 items away from end
+            lastVisibleItemIndex > (totalItemsNumber - 5)
+        }
+    }
+
+    LaunchedEffect(shouldLoadMore.value) {
+        if (shouldLoadMore.value && !isMoreLoading) {
+            onLoadMore()
+        }
+    }
+
     LazyColumn(
+        state = listState,
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(
             items = jobs,
-            key = { it.jobId } // Use stable key for better performance
+            key = { it.jobId },
+            contentType = { "job_card" }
         ) { job ->
             JobFeedCard(
                 job = job,
                 userLocation = userLocation,
                 onContactClick = {
-                    // Navigate to the job provider's profile
                     navController.navigate("worker_profile/${job.providerId}")
                 }
             )
+        }
+
+        // Pagination loading indicator
+        if (isMoreLoading) {
+            item(contentType = "loading") {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        color = ProColors.Primary,
+                        modifier = Modifier.size(32.dp)
+                    )
+                }
+            }
         }
     }
 }
@@ -296,12 +338,18 @@ fun JobFeedCard(
     var showMap by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-    // Calculate distance from user to job
-    val distanceKm = userLocation?.let {
-        calculateDistance(
-            it.latitude, it.longitude,
-            job.latitude, job.longitude
-        )
+    // Performance: Wrap distance calculation in remember
+    val distanceKm = remember(userLocation, job.latitude, job.longitude) {
+        userLocation?.let {
+            calculateDistance(
+                it.latitude, it.longitude,
+                job.latitude, job.longitude
+            )
+        }
+    }
+    
+    val formattedDistance = remember(distanceKm) {
+        distanceKm?.let { formatDistance(it) }
     }
 
     Card(
@@ -336,7 +384,7 @@ fun JobFeedCard(
                     )
 
                     // Distance badge
-                    if (distanceKm != null) {
+                    if (formattedDistance != null) {
                         Surface(
                             color = ProColors.SecondaryContainer,
                             shape = RoundedCornerShape(12.dp)
@@ -353,7 +401,7 @@ fun JobFeedCard(
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(
-                                    text = formatDistance(distanceKm),
+                                    text = formattedDistance,
                                     style = MaterialTheme.typography.labelMedium,
                                     color = ProColors.SecondaryDark,
                                     fontWeight = FontWeight.SemiBold

@@ -1,21 +1,21 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Retrofit & OkHttp
+-keepattributes Signature, InnerClasses, AnnotationDefault
+-keep class retrofit2.** { *; }
+-keep @retrofit2.http.** interface * { *; }
+-keep class okhttp3.** { *; }
+-dontwarn okhttp3.**
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+-dontwarn org.conscrypt.**
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Gson
+-keep class com.google.gson.** { *; }
+-keepattributes Signature
+-keepattributes *Annotation*
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Keep your data models (Add all packages containing DTOs/Models)
+-keep class com.anand.prohands.data.** { *; }
+-keepclassmembers class com.anand.prohands.data.** { *; }
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Keep ReviewApi and other network interfaces
+-keep interface com.anand.prohands.network.** { *; }

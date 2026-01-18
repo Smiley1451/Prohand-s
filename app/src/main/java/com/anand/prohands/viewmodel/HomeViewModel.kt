@@ -30,12 +30,30 @@ class HomeViewModel(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
+    private val _isMoreLoading = MutableStateFlow(false)
+    val isMoreLoading: StateFlow<Boolean> = _isMoreLoading
+
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
+    private var currentPage = 0
+    private var isLastPage = false
+    private val pageSize = 20
+
     fun setLocation(location: Location) {
+        val oldLocation = _location.value
         _location.value = location
-        fetchJobs(location.latitude, location.longitude)
+        
+        // If location changed significantly or first load, refresh jobs
+        if (oldLocation == null || calculateDistance(oldLocation, location) > 500) { // 500 meters
+            refreshJobs()
+        }
+    }
+
+    private fun calculateDistance(loc1: Location, loc2: Location): Float {
+        val results = FloatArray(1)
+        Location.distanceBetween(loc1.latitude, loc1.longitude, loc2.latitude, loc2.longitude, results)
+        return results[0]
     }
     
     fun fetchUserProfile(userId: String) {
@@ -51,21 +69,56 @@ class HomeViewModel(
         }
     }
 
-    fun fetchJobs(latitude: Double, longitude: Double, page: Int = 0, size: Int = 20) {
+    fun refreshJobs() {
+        val loc = _location.value ?: return
+        currentPage = 0
+        isLastPage = false
+        fetchJobs(loc.latitude, loc.longitude, isRefresh = true)
+    }
+
+    fun loadMoreJobs() {
+        val loc = _location.value ?: return
+        if (_isMoreLoading.value || isLastPage) return
+        
+        currentPage++
+        fetchJobs(loc.latitude, loc.longitude, isRefresh = false)
+    }
+
+    private fun fetchJobs(latitude: Double, longitude: Double, isRefresh: Boolean) {
         viewModelScope.launch {
-            _isLoading.value = true
+            if (isRefresh) {
+                _isLoading.value = true
+            } else {
+                _isMoreLoading.value = true
+            }
+            
             _error.value = null
             try {
-                val response = jobService.getJobFeed(latitude, longitude, page, size)
+                val response = jobService.getJobFeed(latitude, longitude, currentPage, pageSize)
                 if (response.isSuccessful) {
-                    _jobs.value = response.body() ?: emptyList()
+                    val newJobs = response.body() ?: emptyList()
+                    if (isRefresh) {
+                        _jobs.value = newJobs
+                    } else {
+                        _jobs.value = _jobs.value + newJobs
+                    }
+                    
+                    if (newJobs.size < pageSize) {
+                        isLastPage = true
+                    }
                 } else {
                     _error.value = "Failed to fetch jobs: ${response.code()}"
+                    if (!isRefresh) currentPage-- // Rollback page on error
                 }
             } catch (e: Exception) {
                 _error.value = e.message ?: "An unexpected error occurred"
+                if (!isRefresh) currentPage-- // Rollback page on error
             } finally {
-                _isLoading.value = false
+                if (isRefresh) {
+                    _isLoading.value = false
+                } else {
+                    _isMoreLoading.value = false
+                }
             }
         }
     }
